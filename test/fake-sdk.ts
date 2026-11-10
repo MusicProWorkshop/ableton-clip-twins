@@ -27,21 +27,21 @@ class AudioTrack_ extends Track_ {}
 const local = { DataModelObject: DataModelObject_, Clip: Clip_, MidiClip: MidiClip_, AudioClip: AudioClip_, ClipSlot: ClipSlot_, Track: Track_, MidiTrack: MidiTrack_, AudioTrack: AudioTrack_ };
 const shared: typeof local = ((globalThis as { __fakeSdk?: typeof local }).__fakeSdk ??= local);
 export const DataModelObject = shared.DataModelObject;
-export type DataModelObject = DataModelObject_;
+export type DataModelObject<_V = "1.0.0"> = DataModelObject_;
 export const Clip = shared.Clip;
-export type Clip = Clip_;
+export type Clip<_V = "1.0.0"> = Clip_;
 export const MidiClip = shared.MidiClip;
-export type MidiClip = MidiClip_;
+export type MidiClip<_V = "1.0.0"> = MidiClip_;
 export const AudioClip = shared.AudioClip;
-export type AudioClip = AudioClip_;
+export type AudioClip<_V = "1.0.0"> = AudioClip_;
 export const ClipSlot = shared.ClipSlot;
-export type ClipSlot = ClipSlot_;
+export type ClipSlot<_V = "1.0.0"> = ClipSlot_;
 export const Track = shared.Track;
-export type Track = Track_;
+export type Track<_V = "1.0.0"> = Track_;
 export const MidiTrack = shared.MidiTrack;
-export type MidiTrack = MidiTrack_;
+export type MidiTrack<_V = "1.0.0"> = MidiTrack_;
 export const AudioTrack = shared.AudioTrack;
-export type AudioTrack = AudioTrack_;
+export type AudioTrack<_V = "1.0.0"> = AudioTrack_;
 
 export interface ExtensionContext<_V = "1.0.0"> {
   application: { song: { tracks: Track_[] } };

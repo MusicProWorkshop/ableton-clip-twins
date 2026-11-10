@@ -17,6 +17,9 @@ import { similarityEdges } from "./core/similarity.js";
 import { DEFAULT_OPTIONS, type Options, type Pattern, type PatternInfo, type SimEdge } from "./core/types.js";
 
 type Context = ExtensionContext<"1.0.0">;
+// SDK classes are generic over the API version, so pin it once here.
+type LiveMidiClip = MidiClip<"1.0.0">;
+type LiveMidiTrack = MidiTrack<"1.0.0">;
 
 const COMMAND_ID = "clipTwins.match";
 const MENU_TITLE = "Match MIDI Clips…";
@@ -37,7 +40,7 @@ export interface DialogResult {
 }
 
 interface ScannedClip {
-  clip: MidiClip;
+  clip: LiveMidiClip;
   patternId: number;
 }
 
@@ -125,7 +128,7 @@ async function scanSet(
   context: Context,
   update: (text: string, progress?: number) => Promise<void>,
 ): Promise<Scan> {
-  const tracks = context.application.song.tracks.filter((t): t is MidiTrack => t instanceof MidiTrack);
+  const tracks = context.application.song.tracks.filter((t): t is LiveMidiTrack => t instanceof MidiTrack);
   const clips: ScannedClip[] = [];
   const patterns: Pattern[] = [];
   const infos: PatternInfo[] = [];
@@ -133,7 +136,7 @@ async function scanSet(
   const nameCounts: Map<string, number>[] = [];
   let empty = 0;
 
-  const add = (clip: MidiClip, trackName: string) => {
+  const add = (clip: LiveMidiClip, trackName: string) => {
     const { notes, length } = normalize(clip.notes, clip);
     if (notes.length === 0) {
       empty++; // every empty clip would "match" every other one — not useful
@@ -161,7 +164,7 @@ async function scanSet(
     for (const slot of track.clipSlots) {
       if (slot.clip instanceof MidiClip) add(slot.clip, track.name);
     }
-    const arranged = track.arrangementClips.filter((c): c is MidiClip => c instanceof MidiClip);
+    const arranged = track.arrangementClips.filter((c): c is LiveMidiClip => c instanceof MidiClip);
     arranged.sort((a, b) => a.startTime - b.startTime);
     for (const clip of arranged) add(clip, track.name);
   }
