@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Match MIDI Clips</title>
+<style>
+  :root {
+    --bg: hsl(0,0%,21%);
+    --control: hsl(0,0%,16%);
+    --input: hsl(0,0%,12%);
+    --text: hsl(0,0%,78%);
+    --dim: hsl(0,0%,52%);
+    --border: hsl(0,0%,7%);
+    --accent: hsl(31,100%,67%);
+    --on-accent: hsl(0,0%,7%);
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    display: flex; flex-direction: column;
+    background: var(--bg); color: var(--text);
+    font: 12px/1.4 "AbletonSansSmall", "Ableton Sans", system-ui, sans-serif;
+    user-select: none;
+  }
+  .options { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; padding: 14px 16px 12px; }
+  fieldset { border: 0; margin: 0; padding: 0; min-width: 0; display: flex; flex-direction: column; gap: 7px; }
+  legend { padding: 0; margin-bottom: 7px; font-weight: 600; color: hsl(0,0%,90%); }
+  label { display: flex; align-items: center; gap: 6px; }
+  .hint { color: var(--dim); }
+  select, input[type=text] {
+    width: 100%; height: 24px; padding: 0 6px;
+    background: var(--input); color: var(--text);
+    border: 1px solid var(--border); border-radius: 2px; font: inherit;
+  }
+  input[type=range] { width: 100%; accent-color: var(--accent); margin: 0; }
+  input[type=checkbox] { accent-color: var(--accent); margin: 0; }
+  :disabled, label:has(:disabled) { opacity: .45; }
+  .ends { display: flex; justify-content: space-between; color: var(--dim); }
+  #preview {
+    flex: 1; overflow-y: auto; margin: 0 16px;
+    background: var(--control); border: 1px solid var(--border); border-radius: 2px;
+  }
+  .family { padding: 8px 10px; border-bottom: 1px solid var(--bg); }
+  .head { display: flex; align-items: baseline; gap: 10px; }
+  .label { font-weight: 600; color: hsl(0,0%,92%); }
+  .label.muted { color: var(--dim); }
+  .facts { color: var(--dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .version { display: flex; align-items: center; gap: 8px; padding: 3px 0 0 4px; }
+  .vname { min-width: 150px; max-width: 240px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .swatch { flex: none; width: 22px; height: 12px; border-radius: 2px; }
+  .swatch.none { border: 1px dashed var(--dim); }
+  .empty { padding: 24px; text-align: center; color: var(--dim); }
+  footer { display: flex; align-items: center; gap: 8px; padding: 12px 16px 14px; }
+  #summary { flex: 1; color: var(--dim); }
+  button {
+    height: 26px; padding: 0 16px; font: inherit;
+    background: var(--control); color: var(--text);
+    border: 1px solid var(--border); border-radius: 2px; cursor: pointer;
+  }
+  button.primary { background: var(--accent); color: var(--on-accent); font-weight: 600; }
+  :focus-visible { outline: 1px solid var(--accent); outline-offset: 1px; }
+</style>
+</head>
+<body>
+  <div class="options">
+    <fieldset>
+      <legend>Versions</legend>
+      <input type="range" id="threshold" min="50" max="99" step="1" aria-label="How alike two clips must be to count as versions">
+      <div class="ends"><span>loose</span><span id="thresholdLabel"></span><span>strict</span></div>
+      <span class="hint">Identical clips always group. This sets how close a clip must be to count as a version.</span>
+    </fieldset>
+    <fieldset>
+      <legend>Names</legend>
+      <select id="nameMode" aria-label="Naming">
+        <option value="smart">Use the group's existing name</option>
+        <option value="track">Track name + letter</option>
+        <option value="custom">My prefix + letter</option>
+        <option value="keep">Don't rename</option>
+      </select>
+      <input type="text" id="prefix" placeholder="Pattern" aria-label="Name prefix" hidden>
+      <select id="suffixStyle" aria-label="Version tag style">
+        <option value="v">Versions: Name v2</option>
+        <option value="paren">Versions: Name (2)</option>
+      </select>
+      <label><input type="checkbox" id="tagFirst"> Tag the first version too</label>
+    </fieldset>
+    <fieldset>
+      <legend>Colors</legend>
+      <select id="colorMode" aria-label="Coloring">
+        <option value="family">One color per group</option>
+        <option value="shaded">One color per group, a shade per version</option>
+        <option value="keep">Don't recolor</option>
+      </select>
+      <label><input type="checkbox" id="dimUnique"> Gray out clips with no match</label>
+    </fieldset>
+  </div>
+  <div id="preview"></div>
+  <footer>
+    <span id="summary"></span>
+    <button id="cancel">Cancel</button>
+    <button id="apply" class="primary">Apply</button>
+  </footer>
+  <script>window.__DATA__ = "__DATA_JSON__";</script>
+  <script>/*__DIALOG_JS__*/</script>
+</body>
+</html>

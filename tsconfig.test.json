@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "paths": { "@ableton-extensions/sdk": ["./test/fake-sdk.ts"] }
+  },
+  "include": ["src/**/*", "test/**/*", "build.ts"]
+}
