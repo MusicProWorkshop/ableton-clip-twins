@@ -15,8 +15,9 @@ class Clip_ extends DataModelObject_ {
 class MidiClip_ extends Clip_ { notes: NoteDescription[] = []; }
 class AudioClip_ extends Clip_ {}
 class ClipSlot_ extends DataModelObject_ { clip: Clip_ | null = null; }
+class TakeLane_ extends DataModelObject_ { name = ""; clips: Clip_[] = []; }
 class Track_ extends DataModelObject_ {
-  clipSlots: ClipSlot[] = []; arrangementClips: Clip_[] = [];
+  clipSlots: ClipSlot_[] = []; arrangementClips: Clip_[] = []; takeLanes: TakeLane_[] = [];
   constructor(public name: string) { super(); }
 }
 class MidiTrack_ extends Track_ {}
@@ -24,7 +25,7 @@ class AudioTrack_ extends Track_ {}
 
 // The tests load this file twice (once inside the bundled extension, once
 // directly), so share one set of classes or `instanceof` would never match.
-const local = { DataModelObject: DataModelObject_, Clip: Clip_, MidiClip: MidiClip_, AudioClip: AudioClip_, ClipSlot: ClipSlot_, Track: Track_, MidiTrack: MidiTrack_, AudioTrack: AudioTrack_ };
+const local = { DataModelObject: DataModelObject_, Clip: Clip_, MidiClip: MidiClip_, AudioClip: AudioClip_, ClipSlot: ClipSlot_, TakeLane: TakeLane_, Track: Track_, MidiTrack: MidiTrack_, AudioTrack: AudioTrack_ };
 const shared: typeof local = ((globalThis as { __fakeSdk?: typeof local }).__fakeSdk ??= local);
 export const DataModelObject = shared.DataModelObject;
 export type DataModelObject<_V = "1.0.0"> = DataModelObject_;
@@ -34,6 +35,8 @@ export const MidiClip = shared.MidiClip;
 export type MidiClip<_V = "1.0.0"> = MidiClip_;
 export const AudioClip = shared.AudioClip;
 export type AudioClip<_V = "1.0.0"> = AudioClip_;
+export const TakeLane = shared.TakeLane;
+export type TakeLane<_V = "1.0.0"> = TakeLane_;
 export const ClipSlot = shared.ClipSlot;
 export type ClipSlot<_V = "1.0.0"> = ClipSlot_;
 export const Track = shared.Track;

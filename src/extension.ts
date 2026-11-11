@@ -123,7 +123,7 @@ async function run(context: Context) {
   );
 }
 
-/** Read every MIDI clip in Session and Arrangement and sort them into exact patterns. */
+/** Read every MIDI clip in Session, Arrangement and take lanes and sort them into exact patterns. */
 async function scanSet(
   context: Context,
   update: (text: string, progress?: number) => Promise<void>,
@@ -167,6 +167,11 @@ async function scanSet(
     const arranged = track.arrangementClips.filter((c): c is LiveMidiClip => c instanceof MidiClip);
     arranged.sort((a, b) => a.startTime - b.startTime);
     for (const clip of arranged) add(clip, track.name);
+    for (const lane of track.takeLanes) {
+      const takes = lane.clips.filter((c): c is LiveMidiClip => c instanceof MidiClip);
+      takes.sort((a, b) => a.startTime - b.startTime);
+      for (const clip of takes) add(clip, track.name);
+    }
   }
 
   infos.forEach((info, id) => {

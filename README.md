@@ -7,7 +7,7 @@ Right-click a MIDI clip, MIDI track or clip slot → **Match MIDI Clips…**
 
 ## What it does
 
-1. Reads every MIDI clip in the Set (Session and Arrangement).
+1. Reads every MIDI clip in the Set (Session, Arrangement and take lanes).
 2. Groups clips that are **strictly identical**: same notes, positions, lengths,
    velocities, probability, mute state and loop length. Clip name, color and
    where the loop sits in the clip don't count. Empty clips are skipped.
@@ -55,7 +55,6 @@ on first run:
   property name differs from what's assumed in `src/extension.ts`.
 - Clip color is written as a `0xRRGGBB` number. Live may snap it to its own
   palette, which could make close shades look the same.
-- Clips in take lanes are not scanned.
 - Errors and the run summary go to Live's `ExtensionHost.txt` log.
 
 ## Layout
