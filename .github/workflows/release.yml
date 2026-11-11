@@ -1,0 +1,40 @@
+name: Release
+
+# Push a tag like v0.2.0 to build clip-twins.ablx and publish it as a GitHub release.
+#
+# Runs on a self-hosted runner because Ableton's license doesn't allow publishing
+# the SDK: the SDK packages stay on the build machine, in the folder named by the
+# SDK_DIR repository variable.
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+
+      - name: Check the version and fetch the SDK
+        run: node scripts/release-prep.mjs
+        env:
+          SDK_DIR: ${{ vars.SDK_DIR }}
+
+      - run: npm ci
+      - run: npm test
+      - run: npm run package
+
+      - name: Publish the release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Clip Twins ${{ github.ref_name }}
+          files: dist/clip-twins.ablx
+          generate_release_notes: true
+          fail_on_unmatched_files: true

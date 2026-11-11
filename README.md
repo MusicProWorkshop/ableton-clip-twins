@@ -5,6 +5,15 @@ as the same (name and/or color), and marks near-copies as numbered versions.
 
 Right-click a MIDI clip, MIDI track or clip slot → **Match MIDI Clips…**
 
+## Install
+
+1. Download [clip-twins.ablx](https://github.com/eshy/clip-twins/releases/latest/download/clip-twins.ablx)
+   (or pick a version from the [releases page](https://github.com/eshy/clip-twins/releases)).
+2. In Live, open Settings → Extensions → Install Extension and choose the file.
+
+Requires Live 12 Suite beta 12.4.5 or later. Extensions are not available in
+Live Standard, Intro or Lite.
+
 ## What it does
 
 1. Reads every MIDI clip in the Set (Session, Arrangement and take lanes).
@@ -24,13 +33,10 @@ Options (remembered between runs):
 - **Colors** — one color per group, one color per group with a shade per
   version, or don't recolor. Optionally gray out clips that match nothing.
 
-## Requirements
+## Development
 
-- Live 12 Suite beta 12.4.5 or later, Developer Mode on (Settings → Extensions)
-- Node.js 24.16 or later
-- The Extensions SDK download from Ableton's beta program
-
-## Build and run
+You need Node.js 24.16 or later, the Extensions SDK download from Ableton's
+beta program, and Developer Mode turned on in Live (Settings → Extensions).
 
 1. Copy the SDK and CLI `.tgz` files into `vendor/` (see `vendor/README.md`).
 2. Create `.env` with the path to Live's extension host, e.g.
@@ -41,21 +47,39 @@ Options (remembered between runs):
 3. `npm install`
 4. `npm start` to load it into Live, or `npm run package` for an installable `dist/clip-twins.ablx`.
 
+Errors and a one-line summary of each run go to Live's `ExtensionHost.txt` log.
+
 Without Live: `npm test` runs the matching engine and the whole extension against
 a simulated Set; `npm run preview` builds `build/interface.html`, which opens in
 any browser with sample data.
 
-## Not yet verified in Live
+## Releasing
 
-This was written from the public SDK notes and community examples, and tested
-against a stand-in for the SDK (`test/fake-sdk.ts`), not the SDK itself. Check
-on first run:
+Pushing a version tag builds `clip-twins.ablx` and publishes it as a GitHub
+release (`.github/workflows/release.yml`).
 
-- `npm run build` type-checks against the real SDK; a type error there means a
-  property name differs from what's assumed in `src/extension.ts`.
-- Clip color is written as a `0xRRGGBB` number. Live may snap it to its own
-  palette, which could make close shades look the same.
-- Errors and the run summary go to Live's `ExtensionHost.txt` log.
+The workflow runs on a self-hosted runner, because Ableton's license doesn't
+allow publishing the SDK: the SDK packages stay on your own machine.
+
+One-time setup:
+
+1. Add a self-hosted runner to this repository (Settings → Actions → Runners →
+   New self-hosted runner) on a machine that has the SDK download.
+2. In Settings → Secrets and variables → Actions, add the variable `SDK_DIR`
+   with the folder on that machine that holds the SDK and CLI `.tgz` files
+   (e.g. `D:\Dev\AbletonExtensions\clip-twins\vendor`).
+
+The runner needs nothing else installed; the workflow sets up Node itself.
+
+To release:
+
+1. Set the same new version in `manifest.json` and `package.json`, and commit.
+2. Tag and push:
+
+       git tag v0.2.0
+       git push origin main v0.2.0
+
+When you move to a newer SDK, put the new `.tgz` files in the `SDK_DIR` folder too.
 
 ## Layout
 
