@@ -55,31 +55,15 @@ any browser with sample data.
 
 ## Releasing
 
-Pushing a version tag builds `clip-twins.ablx` and publishes it as a GitHub
-release (`.github/workflows/release.yml`).
-
-The workflow runs on a self-hosted runner, because Ableton's license doesn't
-allow publishing the SDK: the SDK packages stay on your own machine.
-
-One-time setup:
-
-1. Add a self-hosted runner to this repository (Settings → Actions → Runners →
-   New self-hosted runner) on a machine that has the SDK download.
-2. In Settings → Secrets and variables → Actions, add the variable `SDK_DIR`
-   with the folder on that machine that holds the SDK and CLI `.tgz` files
-   (e.g. `D:\Dev\AbletonExtensions\clip-twins\vendor`).
-
-The runner needs nothing else installed; the workflow sets up Node itself.
-
-To release:
+Releases are built on your own machine, since the SDK can't be published, and
+uploaded with the [GitHub CLI](https://cli.github.com) (`gh auth login` once).
 
 1. Set the same new version in `manifest.json` and `package.json`, and commit.
-2. Tag and push:
+2. Run `npm run release`.
 
-       git tag v0.2.0
-       git push origin main v0.2.0
-
-When you move to a newer SDK, put the new `.tgz` files in the `SDK_DIR` folder too.
+The script checks that the versions agree, the working tree is clean and the
+tag is new, then runs the tests, builds `dist/clip-twins.ablx`, tags the commit,
+pushes the tag, and publishes a GitHub release with the file attached.
 
 ## Layout
 
@@ -90,6 +74,7 @@ When you move to a newer SDK, put the new `.tgz` files in the `SDK_DIR` folder t
     src/extension.ts scan the Set, show the dialog, apply
     src/ui/dialog.ts dialog logic (live preview uses the same plan.ts)
     ui/interface.html
+    scripts/release.mjs
     test/
 
 ## License

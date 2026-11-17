@@ -22,7 +22,8 @@
     "start": "npm run build:dev && extensions-cli run",
     "package": "npm run build && extensions-cli package -o dist/clip-twins.ablx",
     "test": "tsx test/core.test.ts && tsx test/e2e.ts",
-    "preview": "tsx build.ts --ui-only"
+    "preview": "tsx build.ts --ui-only",
+    "release": "node scripts/release.mjs"
   },
   "dependencies": {
     "@ableton-extensions/sdk": "file:./vendor/ableton-extensions-sdk-1.0.0-beta.1.tgz"
