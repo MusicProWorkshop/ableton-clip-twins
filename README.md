@@ -7,8 +7,8 @@ Right-click a MIDI clip, MIDI track or clip slot → **Match MIDI Clips…**
 
 ## Install
 
-1. Download [clip-twins.ablx](https://github.com/eshy/clip-twins/releases/latest/download/clip-twins.ablx)
-   (or pick a version from the [releases page](https://github.com/eshy/clip-twins/releases)).
+1. Download [clip-twins.ablx](https://github.com/MusicProWorkshop/ableton-clip-twins/releases/latest/download/clip-twins.ablx)
+   (or pick a version from the [releases page](https://github.com/MusicProWorkshop/ableton-clip-twins/releases)).
 2. In Live, open Settings → Extensions → Install Extension and choose the file.
 
 Requires Live 12 Suite beta 12.4.5 or later. Extensions are not available in
@@ -91,3 +91,9 @@ When you move to a newer SDK, put the new `.tgz` files in the `SDK_DIR` folder t
     src/ui/dialog.ts dialog logic (live preview uses the same plan.ts)
     ui/interface.html
     test/
+
+## License
+
+[MIT](LICENSE). The released `clip-twins.ablx` also bundles parts of Ableton's
+Extensions SDK, which remain under Ableton's own license. The SDK itself is not
+included in this repository.
